@@ -16,11 +16,17 @@
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
       "/etc/NetworkManager/system-connections"
+      "/var/lib/sbctl"
     ];
     files = [
       "/etc/machine-id"
+      "/etc/secrets/initrd/ssh_host_ed25519_key"
+      "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
       "/var/lib/sops-nix/keys.txt"
-      { file = "/var/keys/secret_file"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
+      {
+        file = "/var/keys/secret_file";
+        parentDirectory = { mode = "u=rwx,g=,o="; };
+      }
     ];
     # users.user = {
     #   directories = [

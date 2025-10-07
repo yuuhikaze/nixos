@@ -8,7 +8,6 @@ let
     "tpm2-measure-pcr=yes"
   ];
   LUKSPasswordFile = "/tmp/pass";
-  LUKSAdditionalKeyFiles = [ "/tmp/CRYPT/desktop_key" ];
 in
 {
   disko.devices = {
@@ -40,7 +39,6 @@ in
                 type = "luks";
                 name = "crypted";
                 passwordFile = LUKSPasswordFile;
-                additionalKeyFiles = LUKSAdditionalKeyFiles;
                 settings.allowDiscards = true;
                 settings.crypttabExtraOpts = crypttabExtraOpts;
                 content = {
@@ -91,7 +89,6 @@ in
                 type = "luks";
                 name = "crypted-sda";
                 passwordFile = LUKSPasswordFile;
-                additionalKeyFiles = LUKSAdditionalKeyFiles;
                 settings.allowDiscards = true;
                 settings.crypttabExtraOpts = crypttabExtraOpts;
                 content = {
@@ -103,7 +100,7 @@ in
                         "compress=zstd:1" # Use zstd with fastest compression level
                         "noatime"         # Don't update access time reading files
                         "space_cache=v2"  # Caches free blocks
-                        "autodefrag"      # Auto-defragment files on write to reduce long-term fragmentation
+                        "autodefrag"      # Improves write speed on HDDs (harmful for SDDs)
                       ];
                     in
                     {

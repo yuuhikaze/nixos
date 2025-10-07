@@ -1,19 +1,18 @@
-{
-  modulesPath,
-  lib,
-  pkgs,
-  config,
-  ...
-} @args:
-{
+# `pkgs`, `lib`, `config` are automatically injected in all modules
+# @source: https://nixos.org/manual/nixos/stable/options
+{ modulesPath, ... }: {
   imports = [
     # Enables non-free firmware
     (modulesPath + "/installer/scan/not-detected.nix")
-    # Common conifiguration for QEMU VMs
+    # Common configuration for QEMU VMs
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko.nix
     ./modules
+    ./system_packages.nix
   ];
-  nix.settings.extra-experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = "nix-command flakes";
+    auto-optimise-store = true;
+  };
   system.stateVersion = "25.05";
 }
