@@ -30,14 +30,24 @@ in
                   "noexec"
                   "nosuid"
                   "nodev"
+                  "umask=0077"
                 ];
+              };
+            };
+            swap = {
+              size = "6G";
+              content = {
+                type = "swap";
+                discardPolicy = "both"; # free unused blocks (not supported for HDDs)
+                randomEncryption = true;
+                priority = 100; # encrypt as long as there is space for it
               };
             };
             luks = {
               size = "100%";
               content = {
                 type = "luks";
-                name = "crypted";
+                name = "crypted-nvme";
                 passwordFile = LUKSPasswordFile;
                 settings.allowDiscards = true;
                 settings.crypttabExtraOpts = crypttabExtraOpts;
@@ -48,16 +58,12 @@ in
                     let
                       btrfsMountOptions = [
                         "compress=zstd:1" # Use zstd with fastest compression level
-                        "noatime"         # Don't update access time reading files
-                        "space_cache=v2"  # Caches free blocks
+                        "noatime"         # Don't update access time metadata on files
+                        "space_cache=v2"  # Cache free blocks
                         "ssd"             # Explicit SSD optimization
                       ];
                     in
                     {
-                      "/swap" = {
-                        mountpoint = "/swap";
-                        swap.swapfile.size = "6G";
-                      };
                       "/root" = {
                         mountpoint = "/";
                         mountOptions = btrfsMountOptions;

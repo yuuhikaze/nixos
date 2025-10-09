@@ -1,13 +1,16 @@
 {
-  imports = [
-    ./packages.nix
-    ./modules
-  ];
-  # User information
-  home.username = "user";
-  home.homeDirectory = "/home/user";
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
-  # Home Manager version
-  home.stateVersion = "25.05";
+  home-manager.users.user = {
+    imports = [
+      ./packages.nix
+      ./modules
+    ];
+    home.username = "user";
+    home.homeDirectory = "/home/user";
+    wayland.windowManager.hyprland = {
+      enable = true;
+      systemd.enable = true;
+      settings = { };
+    };
+    home.stateVersion = "25.05";
+  };
 }

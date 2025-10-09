@@ -11,10 +11,8 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence = {
-      url = "github:nix-community/impermanence";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    impermanence.url =
+      "github:nix-community/impermanence"; # does not have override for inputs
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,26 +21,32 @@
       url = "github:nix-community/lanzaboote/v0.4.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixos-facter-modules = {
-      url = "github:numtide/nixos-facter-modules";
+    nixos-facter-modules.url = "github:numtide/nixos-facter-modules";
+    stylix = {
+      url = "github:nix-community/stylix/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, impermanence, sops-nix, disko, lanzaboote
-    , nixos-facter-modules, ... }: {
-      nixosConfigurations.generic = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./nixos/configuration.nix
-          ./nixos/hardware-configuration.nix
-          ./nixos/core
-          impermanence.nixosModules.impermanence
-          sops-nix.nixosModules.sops
-          disko.nixosModules.disko
-          lanzaboote.nixosModules.lanzaboote
-          nixos-facter-modules.nixosModules.facter
-        ];
-      };
+  outputs = { nixpkgs, ... }@inputs: {
+    nixosConfigurations.generic = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        ./nixos/configuration.nix
+        ./nixos/core
+        ./home-manager/home.nix
+        inputs.impermanence.nixosModules.impermanence
+        inputs.sops-nix.nixosModules.sops
+        inputs.disko.nixosModules.disko
+        inputs.lanzaboote.nixosModules.lanzaboote
+        inputs.nixos-facter-modules.nixosModules.facter
+        inputs.home-manager.nixosModules.home-manager
+        {
+          home-manager.sharedModules =
+            [ inputs.impermanence.nixosModules.home-manager.impermanence ];
+        }
+        inputs.stylix.nixosModules.stylix
+      ];
     };
+  };
 }

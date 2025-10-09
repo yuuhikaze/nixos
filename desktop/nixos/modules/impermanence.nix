@@ -1,16 +1,12 @@
 {
-  # @source: https://github.com/nix-community/disko/issues/192#issuecomment-2567944604
-  # Ensure /persist is mounted before "user activation" script is run
   fileSystems."/persist".neededForBoot = true;
-  # Ensure config is preserved for virtualized environments
-  virtualisation.vmVariantWithDisko = {
-    virtualisation.fileSystems."/persist".neededForBoot = true;
-  };
   # @source: https://nixos.wiki/wiki/Impermanence
+  programs.fuse.userAllowOther = true;
   environment.persistence."/persist" = {
     enable = true;
     hideMounts = true;
     directories = [
+      "/etc/nixos"
       "/var/log"
       "/var/lib/bluetooth"
       "/var/lib/nixos"
@@ -22,25 +18,10 @@
       "/etc/machine-id"
       "/etc/secrets/initrd/ssh_host_ed25519_key"
       "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
-      "/var/lib/sops-nix/keys.txt"
       {
-        file = "/var/keys/secret_file";
-        parentDirectory = { mode = "u=rwx,g=,o="; };
+        file = "/var/keys/sops-nix";
+        parentDirectory.mode = "0700";
       }
     ];
-    # users.user = {
-    #   directories = [
-    #     "Downloads"
-    #     "Pictures"
-    #     "Documents"
-    #     "Videos"
-    #     { directory = ".gnupg"; mode = "0700"; }
-    #     { directory = ".ssh"; mode = "0700"; }
-    #     { directory = ".local/share/keyrings"; mode = "0700"; }
-    #   ];
-    #   files = [
-    #     ".screenrc"
-    #   ];
-    # };
   };
 }

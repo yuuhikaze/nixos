@@ -3,5 +3,6 @@
     ncdu
     curl
     neovim
+    libnotify
   ];
 }

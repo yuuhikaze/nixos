@@ -5,8 +5,12 @@
     ./sops.nix
     ./networking.nix
     ./ssh.nix
-    ./system_packages.nix
-    ./users.nix
+    ./virtualization.nix
+    ./hyprland.nix
+    ./stylix.nix
+    ./audio.nix
     ./locale.nix
+    ./users.nix
+    ./garbage-collector.nix
   ];
 }

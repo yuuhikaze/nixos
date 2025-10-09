@@ -1,8 +1,9 @@
-{
+{ lib, ... }: {
   boot.loader = {
     systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
     efi.efiSysMountPoint = "/efi";
+    timeout = 0; # hides boot menu, hold space during boot to bring it up
   };
   # @source: https://www.brokenpip3.com/posts/2025-05-25-nixos-secure-installation-hetzner
   boot.kernelParams = [ "ip=dhcp" ];
@@ -20,5 +21,14 @@
         shell = "/bin/cryptsetup-askpass";
       };
     };
+    postDeviceCommands = lib.mkAfter ''
+      mkdir -p /btrfs_tmp
+      # Mount the unlocked Btrfs volume
+      mount -o subvol=/ /dev/mapper/crypted-nvme /btrfs_tmp
+      # Create a fresh root subvolume
+      btrfs subvolume delete /btrfs_tmp/root
+      btrfs subvolume create /btrfs_tmp/root
+      umount /btrfs_tmp
+    '';
   };
 }

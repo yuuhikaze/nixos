@@ -2,8 +2,11 @@
   sops = {
     defaultSopsFormat = "yaml";
     defaultSopsFile = ../../secrets/secrets.yaml;
+    age.keyFile = "/persist/var/keys/sops-nix";
     # @source: https://github.com/Mic92/sops-nix?tab=readme-ov-file#setting-a-users-password
-    age.keyFile = "/persist/var/lib/sops-nix/key.txt";
-    secrets."system/users/root".neededForUsers = true;
+    secrets = {
+      "system/users/root".neededForUsers = true;
+      "system/users/user".neededForUsers = true;
+    };
   };
 }
