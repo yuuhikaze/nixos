@@ -1,4 +1,4 @@
-# Desktop NixOS configuration
+# Common NixOS configuration
 
 ### Installation/deployment
 

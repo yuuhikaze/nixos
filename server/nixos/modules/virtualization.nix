@@ -1,7 +1,3 @@
 {
-  virtualisation.docker = {
-    enable = true;
-    storageDriver = "overlay";
-    extraOptions = "--iptables=False";
-  };
+  virtualisation.incus.enable = true;
 }
