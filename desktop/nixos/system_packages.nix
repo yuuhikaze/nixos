@@ -4,5 +4,9 @@
     curl
     neovim
     libnotify
+    efibootmgr
+  ];
+  fonts.packages = with pkgs; [
+    terminus_font
   ];
 }

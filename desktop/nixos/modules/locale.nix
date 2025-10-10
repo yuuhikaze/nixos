@@ -7,8 +7,4 @@
   console.font = "ter-28n";  # You can choose a different size variant too
   # Set time zone
   time.timeZone = "America/Guayaquil";
-  /* Install the Terminus font package
-  fonts.packages = with pkgs; [
-    terminus_font
-  ]; */
 }

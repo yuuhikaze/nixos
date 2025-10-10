@@ -13,11 +13,12 @@
       "/var/lib/systemd/coredump"
       "/etc/NetworkManager/system-connections"
       "/var/lib/sbctl"
+      "/etc/secrets/initrd"
     ];
     files = [
       "/etc/machine-id"
-      "/etc/secrets/initrd/ssh_host_ed25519_key"
-      "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
+      # "/etc/secrets/initrd/ssh_host_ed25519_key"
+      # "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
       {
         file = "/var/keys/sops-nix";
         parentDirectory.mode = "0700";

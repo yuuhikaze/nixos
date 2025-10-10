@@ -15,29 +15,35 @@ Live-boot a minimal NixOS image on the target machine, then configure as follows
 sudo -i # escalate to superuser
 loadkeys es # switch to spanish keyboard layout
 passwd # change root password
-systemctl start sshd # start SSH
-dd if=/dev/urandom bs=1 count=32 | base64 > /tmp/pass # generate LUKS decryption key (passed to cryptsetup)
-mkdir -p /mnt/etc/secrets/initrd
-ssh-keygen -t ed25519 -f /mnt/etc/secrets/initrd/ssh_host_ed25519_key -N "" -C ""
+systemctl start sshd # start SSH service
+dd if=/dev/urandom bs=1 count=32 | base64 > /tmp/pass # generate LUKS decryption key
 # ==> @EXECUTOR <==
-# SET UP SOPS
-# @source: https://youtube.com/watch?v=G5f6GC7SnhU
-nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/id_ed25519 > /tmp/sops-nix # derive private age key from private SSH key
-nix shell nixpkgs#age -c age-keygen -y /tmp/sops-nix # display public age key derived from private key
-# ==> @TARGET <==
-mkdir -p mnt/persist/var/keys
-vim /mnt/persist/var/keys/sops-nix # write the value of the private age key
-# ==> @EXECUTOR <==
-# RUN NIXOS-ANYWHERE
+# Run nixos-anywhere (phase kexec,disko)
 nix run nixpkgs#nixos-anywhere \
   --extra-experimental-features "nix-command flakes" \
   -- --flake '.#generic' \
   --generate-hardware-config nixos-facter ./facter.json \
+  --phases "kexec,disko" \
   root@<target_machine_IP>
-# UNLOCK LUKS
+# ==> @TARGET <==
+# Set up SSH hosts
+mkdir -p /mnt/persist/etc/secrets/initrd
+ssh-keygen -t ed25519 -f /mnt/persist/etc/secrets/initrd/ssh_host_ed25519_key -N "" -C ""
+chmod 600 /mnt/persist/etc/secrets/initrd/ssh_host_ed25519_key
+# Set age private key
+mkdir -p /mnt/persist/var/keys
+vim /mnt/persist/var/keys/sops-nix
+# ==> @EXECUTOR <==
+# Run nixos-anywhere (phase install,reboot)
+nix run nixpkgs#nixos-anywhere \
+  --extra-experimental-features "nix-command flakes" \
+  -- --flake '.#generic' \
+  --phases "install,reboot" \
+  root@<target_machine_IP>
+# Unlock LUKS
 cat <<< "<pass>" | ssh -p 2224 root@<target_machine_IP>
 # ==> @TARGET <==
-# ENROLL LUKS DECRYPTION KEYS ON TPM CHIP
+# Enroll LUKS decryption keys on TPM chip
 # @source: https://www.freedesktop.org/software/systemd/man/latest/systemd-cryptenroll.html#id-1.5.7.5
 sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+4+7+15 /dev/disk/by-partlabel/disk-nvme0n1-luks
 sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+4+7+15 /dev/disk/by-partlabel/disk-sda-luks
@@ -45,36 +51,38 @@ sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+4+7+15 /dev/disk/by-pa
 
 ### Post-Install Steps
 
+Let's now enable secure boot
+
 ```bash
-# SET UP LANZABOOTE
-# Enable
-touch lanzaboote-enabled # CWD is relative to flake.nix
-# Create keys
+# ==> @TARGET <==
+touch lanzaboote-enabled # enable Lanzaboote, CWD is relative to README.md
 sudo sbctl create-keys
-# Validate
-sudo sbctl verify
+sudo sbctl verify # validate
 # ==> @EXECUTOR <==
 nixos-rebuild switch --flake .#generic --target-host root@<target_machine_IP>
 # ==> @TARGET <==
 # > Reboot, enter BIOS (spam F2)
 #     Set "Secure Boot" to enabled
 #     Select "Reset to Setup Mode"
-# Enroll keys
 sudo sbctl enroll-keys --microsoft
-# Validate
-bootctl status
+bootctl status # validate
 ```
 
 ### Manteinance
 
 ```bash
-nix flake update # Update flake inputs
-sudo nixos-rebuild switch --flake .#generic # Switch to updated system
+nix flake update # update flake inputs
+sudo nixos-rebuild switch --flake .#generic # switch to updated system
 ```
 
 ### Secrets
 
 ```bash
-echo -n "<secret>" | mkpasswd -s # hash secret
-sops secrets/secret.yaml # edit secrets file
+# ==> SOPS-NIX <==
+# @source: https://youtube.com/watch?v=G5f6GC7SnhU
+# Set up identity/authentication
+nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/id_ed25519 > /persist/var/keys/sops-nix # derive private age key from private SSH key
+nix shell nixpkgs#age -c age-keygen -y /persist/var/keys/sops-nix # display public age key derived from private key
+# Generate, edit secrets file
+sops secrets.yml
 ```

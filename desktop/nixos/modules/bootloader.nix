@@ -8,6 +8,10 @@
   # @source: https://www.brokenpip3.com/posts/2025-05-25-nixos-secure-installation-hetzner
   boot.kernelParams = [ "ip=dhcp" ];
   boot.initrd = {
+    # CRITICAL: Copy the SSH host key INTO initrd at build time
+    # Use mkForce to override NixOS's automatic setup (/etc/ssh/*)
+    # secrets."/etc/secrets/initrd/ssh_host_ed25519_key" =
+    #   lib.mkForce "/persist/etc/secrets/initrd/ssh_host_ed25519_key";
     availableKernelModules = [ "r8169" ];
     network = {
       enable = true;
@@ -17,7 +21,7 @@
         authorizedKeys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG1Cuipi+gnoQ78FmzWRr/Aco0cfRld3lJtRCmnISLrQ"
         ];
-        hostKeys = [ "/etc/secrets/initrd/ssh_host_ed25519_key" ];
+        hostKeys = [ "/persist/etc/secrets/initrd/ssh_host_ed25519_key" ];
         shell = "/bin/cryptsetup-askpass";
       };
     };

@@ -42,8 +42,10 @@
         inputs.nixos-facter-modules.nixosModules.facter
         inputs.home-manager.nixosModules.home-manager
         {
-          home-manager.sharedModules =
-            [ inputs.impermanence.nixosModules.home-manager.impermanence ];
+          home-manager.sharedModules = [
+            inputs.impermanence.nixosModules.home-manager.impermanence
+            # inputs.stylix.homeManagerModules.stylix
+          ];
         }
         inputs.stylix.nixosModules.stylix
       ];
