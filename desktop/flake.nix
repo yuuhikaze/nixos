@@ -42,13 +42,12 @@
         inputs.nixos-facter-modules.nixosModules.facter
         inputs.home-manager.nixosModules.home-manager
         {
-          home-manager.sharedModules = [
-            inputs.impermanence.nixosModules.home-manager.impermanence
-            # inputs.stylix.homeManagerModules.stylix
-          ];
+          home-manager.sharedModules =
+            [ inputs.impermanence.nixosModules.home-manager.impermanence ];
         }
         inputs.stylix.nixosModules.stylix
       ];
+      specialArgs = { authorizedKeys = import ../common/authorized-keys.nix; };
     };
   };
 }

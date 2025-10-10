@@ -2,7 +2,7 @@
   stylix.enable = true;
   stylix.polarity = "dark";
   stylix.image =
-    ../../1668510030_kartinkin-net-p-prizrak-tsusimi-art-oboi-13.jpg;
+    ../../../common/wallpapers/1668510030_kartinkin-net-p-prizrak-tsusimi-art-oboi-13.jpg;
   stylix.fonts = with pkgs; {
     monospace = {
       package = nerd-fonts.jetbrains-mono;
