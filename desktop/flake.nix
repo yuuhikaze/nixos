@@ -33,8 +33,7 @@
       system = "x86_64-linux";
       modules = [
         ./nixos/configuration.nix
-        ./nixos/core
-        ./home-manager/home.nix
+        ../common/home-manager/home.nix
         inputs.impermanence.nixosModules.impermanence
         inputs.sops-nix.nixosModules.sops
         inputs.disko.nixosModules.disko
@@ -47,7 +46,10 @@
         }
         inputs.stylix.nixosModules.stylix
       ];
-      specialArgs = { authorizedKeys = import ../common/authorized-keys.nix; };
+      specialArgs = {
+        authorizedKeys = import ../common/values/authorized-keys.nix;
+        host = "desktop";
+      };
     };
   };
 }

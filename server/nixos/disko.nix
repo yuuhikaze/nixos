@@ -1,4 +1,4 @@
-let filesystemOptions = import ../../common/filesystem-options.nix;
+let filesystemOptions = import ../../common/values/filesystem-options.nix;
 in with filesystemOptions; {
   disko.devices = {
     disk = {
@@ -43,7 +43,7 @@ in with filesystemOptions; {
               mountOptions = [ "defaults" ];
             };
           };
-          syncthing = {
+          storage = {
             size = "100%FREE";
             content = {
               type = "btrfs";
@@ -66,6 +66,10 @@ in with filesystemOptions; {
                 };
                 "/hades" = {
                   mountpoint = "/mnt/hades";
+                  mountOptions = btrfsMountOptions;
+                };
+                "/aether" = {
+                  mountpoint = "/mnt/aether";
                   mountOptions = btrfsMountOptions;
                 };
               };

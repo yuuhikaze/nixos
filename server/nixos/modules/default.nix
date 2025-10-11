@@ -1,14 +1,12 @@
 {
   imports = [
-    ./bootloader.nix
+    ../../../common/modules
+    ./easytier.nix
     ./impermanence.nix
-    ./sops.nix
     ./networking.nix
-    ./ssh.nix
-    ./virtualization.nix
-    ./audio.nix
-    ./locale.nix
+    ./services.nix
+    ./sops.nix
     ./users.nix
-    ./garbage-collector.nix
+    ./virtualisation.nix
   ];
 }

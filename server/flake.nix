@@ -25,14 +25,16 @@
       system = "x86_64-linux";
       modules = [
         ./nixos/configuration.nix
-        ./nixos/core
         inputs.impermanence.nixosModules.impermanence
         inputs.sops-nix.nixosModules.sops
         inputs.disko.nixosModules.disko
         inputs.lanzaboote.nixosModules.lanzaboote
         inputs.nixos-facter-modules.nixosModules.facter
       ];
-      specialArgs = { authorizedKeys = import ../common/authorized-keys.nix; };
+      specialArgs = {
+        authorizedKeys = import ../common/values/authorized-keys.nix;
+        host = "server";
+      };
     };
   };
 }

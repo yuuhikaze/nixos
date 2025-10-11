@@ -1,4 +1,4 @@
-let filesystemOptions = import ../../common/filesystem-options.nix;
+let filesystemOptions = import ../../common/values/filesystem-options.nix;
 in with filesystemOptions; {
   disko.devices = {
     disk = {

@@ -1,16 +1,13 @@
 {
   imports = [
-    ./bootloader.nix
-    ./impermanence.nix
-    ./sops.nix
-    ./networking.nix
-    ./ssh.nix
-    ./virtualization.nix
+    ../../../common/modules
     ./hyprland.nix
+    ./impermanence.nix
+    ./networking.nix
+    ./services.nix
+    ./sops.nix
     ./stylix.nix
-    ./audio.nix
-    ./locale.nix
     ./users.nix
-    ./garbage-collector.nix
+    ./virtualisation.nix
   ];
 }

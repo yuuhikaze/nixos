@@ -5,6 +5,7 @@
     neovim
     libnotify
     efibootmgr
+    easytier
   ];
   fonts.packages = with pkgs; [
     terminus_font
