@@ -8,6 +8,7 @@
     ./locale.nix
     ./networking.nix
     ./openssh.nix
+    ./security.nix
     ./sysctl.nix
   ];
 }
