@@ -33,7 +33,7 @@
       system = "x86_64-linux";
       modules = [
         ./nixos/configuration.nix
-        ../common/home-manager/home.nix
+        ./home-manager/home.nix
         inputs.impermanence.nixosModules.impermanence
         inputs.sops-nix.nixosModules.sops
         inputs.disko.nixosModules.disko

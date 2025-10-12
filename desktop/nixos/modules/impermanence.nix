@@ -1,12 +1,11 @@
 {
   fileSystems."/persist".neededForBoot = true;
+  systemd.tmpfiles.rules = [ "d /persist/home/user 0700 user users -" ];
   # @source: https://nixos.wiki/wiki/Impermanence
-  programs.fuse.userAllowOther = true;
   environment.persistence."/persist" = {
     enable = true;
     hideMounts = true;
     directories = [
-      "/etc/nixos"
       "/var/log"
       "/var/lib/bluetooth"
       "/var/lib/nixos"
@@ -17,8 +16,6 @@
     ];
     files = [
       "/etc/machine-id"
-      # "/etc/secrets/initrd/ssh_host_ed25519_key"
-      # "/etc/secrets/initrd/ssh_host_ed25519_key.pub"
       {
         file = "/var/keys/sops-nix";
         parentDirectory.mode = "0700";

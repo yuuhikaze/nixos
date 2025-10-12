@@ -59,7 +59,10 @@ touch lanzaboote-enabled # enable Lanzaboote, CWD is relative to README.md
 sudo sbctl create-keys
 sudo sbctl verify # validate
 # ==> @EXECUTOR <==
-nixos-rebuild switch --flake .#generic --target-host root@<target_machine_IP>
+nix run nixpkgs#nixos-rebuild \
+  --extra-experimental-features "nix-command flakes" \
+  -- switch --flake .#generic \
+  --target-host root@<target_machine_IP>
 # ==> @TARGET <==
 # > Reboot, enter BIOS (spam F2)
 #     Set "Secure Boot" to enabled
@@ -81,8 +84,16 @@ sudo nixos-rebuild switch --flake .#generic # switch to updated system
 # ==> SOPS-NIX <==
 # @source: https://youtube.com/watch?v=G5f6GC7SnhU
 # Set up identity/authentication
-nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/id_ed25519 > /persist/var/keys/sops-nix # derive private age key from private SSH key
-nix shell nixpkgs#age -c age-keygen -y /persist/var/keys/sops-nix # display public age key derived from private key
+nix run nixpkgs#ssh-to-age \
+  --extra-experimental-features "nix-command flakes" \
+  -- -private-key -i ~/.ssh/id_ed25519 > /var/keys/sops-nix # derive private age key from private SSH key
+# Display public age key derived from private key
+# Set value on `&primary` field of `.sops.yaml` file
+nix shell nixpkgs#age \
+  --extra-experimental-features "nix-command flakes" \
+  -c age-keygen -y /var/keys/sops-nix
 # Generate, edit secrets file
-sops secrets.yml
+nix run nixpkgs#sops \
+  --extra-experimental-features "nix-command flakes" \
+  -- secrets.yaml
 ```

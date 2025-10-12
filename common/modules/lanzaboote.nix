@@ -1,7 +1,8 @@
 { lib, host, ... }:
 let
   # Check if marker file exists
-  lanzabooteEnabled = builtins.pathExists "../../${host}/lanzaboote-enabled";
+  lanzabootePath = toString ./. + "/../../${host}/lanzaboote-enabled";
+  lanzabooteEnabled = builtins.pathExists lanzabootePath;
 in {
   boot.loader.systemd-boot.enable = lib.mkForce (!lanzabooteEnabled);
   boot.lanzaboote = {

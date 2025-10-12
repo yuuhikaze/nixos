@@ -21,56 +21,41 @@ in with filesystemOptions; {
                 passwordFile = LUKSPasswordFile;
                 settings = LUKSSettingsPreset;
                 content = {
-                  type = "lvm_pv";
-                  vg = "pool";
-                };
-              };
-            };
-          };
-        };
-      };
-    };
-    lvm_vg = {
-      pool = {
-        type = "lvm_vg";
-        lvs = {
-          root = {
-            size = "60%";
-            content = {
-              type = "filesystem";
-              format = "xfs";
-              mountpoint = "/";
-              mountOptions = [ "defaults" ];
-            };
-          };
-          storage = {
-            size = "100%FREE";
-            content = {
-              type = "btrfs";
-              extraArgs = btrfsExtraArgs;
-              subvolumes = let
-                btrfsMountOptions = [
-                  "compress=zstd:1" # Use zstd with fastest compression level
-                  "noatime" # Don't update access time reading files
-                  "space_cache=v2" # Caches free blocks
-                  "ssd" # Explicit SSD optimization
-                ];
-              in {
-                "/atlas" = {
-                  mountpoint = "/mnt/atlas";
-                  mountOptions = btrfsMountOptions;
-                };
-                "/hermes" = {
-                  mountpoint = "/mnt/hermes";
-                  mountOptions = btrfsMountOptions;
-                };
-                "/hades" = {
-                  mountpoint = "/mnt/hades";
-                  mountOptions = btrfsMountOptions;
-                };
-                "/aether" = {
-                  mountpoint = "/mnt/aether";
-                  mountOptions = btrfsMountOptions;
+                  type = "btrfs";
+                  extraArgs = btrfsExtraArgs;
+                  subvolumes = let
+                    btrfsMountOptions = [
+                      "compress=zstd:1" # Use zstd with fastest compression level
+                      "noatime" # Don't update access time reading files
+                      "space_cache=v2" # Caches free blocks
+                      "ssd" # Explicit SSD optimization
+                    ];
+                  in {
+                    "/root" = {
+                      mountpoint = "/";
+                      mountOptions = btrfsMountOptions;
+                    };
+                    "/persist" = {
+                      mountpoint = "/persist";
+                      mountOptions = btrfsMountOptions;
+                    };
+                    "/nix" = {
+                      mountpoint = "/nix";
+                      mountOptions = btrfsMountOptions;
+                    };
+                    "/atlas" = {
+                      mountpoint = "/mnt/atlas";
+                      mountOptions = btrfsMountOptions;
+                    };
+                    "/hermes" = {
+                      mountpoint = "/mnt/hermes";
+                      mountOptions = btrfsMountOptions;
+                    };
+                    "/aether" = {
+                      mountpoint = "/mnt/aether";
+                      mountOptions = btrfsMountOptions;
+                    };
+                  };
                 };
               };
             };

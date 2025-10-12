@@ -1,0 +1,43 @@
+{
+  programs.hyprlock = {
+    enable = true;
+
+    settings = {
+      /* background = [
+        {
+          monitor = ""; # Set to specific monitor if needed
+          color = "$color";
+          path = "~/.config/omarchy/current/background";
+          blur_passes = 3;
+        }
+      ]; */
+      animations = {
+        enabled = false;
+      };
+      /* input-field = [
+        {
+          monitor = "";
+          size = "600, 100";
+          position = "0, 0";
+          halign = "center";
+          valign = "center";
+
+          # inner_color = "$inner_color";
+          # outer_color = "$outer_color";
+          outline_thickness = 4;
+
+          font_family = "CaskaydiaMono Nerd Font";
+          # font_color = "$font_color";
+
+          placeholder_text = "  Enter Password 󰈷 ";
+          # check_color = "$check_color";
+          fail_text = "<i>$PAMFAIL ($ATTEMPTS)</i>";
+
+          rounding = 0;
+          shadow_passes = 0;
+          fade_on_empty = false;
+        }
+      ]; */
+    };
+  };
+}

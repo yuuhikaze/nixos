@@ -8,12 +8,14 @@
     };
   };
   home.packages = with pkgs; [
+    swayosd
     fastfetch
     kitty
     nemo
     rofi-wayland
-    librewolf-bin
     mako
+    uwsm
+    librewolf-bin
     (waybar.overrideAttrs (oldAttrs: {
       mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
     }))

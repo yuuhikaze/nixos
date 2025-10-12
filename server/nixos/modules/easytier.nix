@@ -2,7 +2,7 @@
   systemd.services."easytier" = {
     enable = true;
     script =
-      "easytier-core -d --network-name sumeragi --network-secret changeme -p tcp://public.easytier.cn:11010 --dev-name et0 --multi-thread";
+      "easytier-core -d --network-name sumeragi --network-secret changeme -p tcp://public.easytier.top:11010 --dev-name et0 --multi-thread";
     serviceConfig = {
       Restart = "always";
       RestartMaxDelaySec = "1m";

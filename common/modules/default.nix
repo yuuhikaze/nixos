@@ -6,5 +6,8 @@
     ./garbage-collector.nix
     (import ./lanzaboote.nix { inherit lib host; })
     ./locale.nix
+    ./networking.nix
+    ./openssh.nix
+    ./sysctl.nix
   ];
 }

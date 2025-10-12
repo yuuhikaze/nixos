@@ -8,16 +8,7 @@ in with filesystemOptions; {
         content = {
           type = "gpt";
           partitions = {
-            ESP = {
-              size = "1G";
-              type = "EF00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/efi";
-                mountOptions = EFIMountOptions;
-              };
-            };
+            ESP = ESPPreset;
             swap = {
               size = "6G";
               content = swapContentPreset;

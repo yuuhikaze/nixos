@@ -5,9 +5,13 @@
       "Pictures"
       "Documents"
       "Videos"
-      ".ssh"
       ".local/share/keyrings"
+      {
+        directory = ".ssh";
+        mode = "0700";
+      }
     ];
+    # @source: https://github.com/nix-community/impermanence?tab=readme-ov-file#home-manager
     allowOther = true;
   };
 }
