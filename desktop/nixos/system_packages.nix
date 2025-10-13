@@ -1,6 +1,7 @@
-let packageBundle = import ../../common/values/package-bundle.nix;
-in with packageBundle;
-{ pkgs, ... }: {
+let packageBundlePath = ../../common/values/package-bundle.nix;
+in { pkgs, ... }:
+let packageBundle = (import packageBundlePath { inherit pkgs; });
+in with packageBundle; {
   environment.systemPackages = with pkgs; [ ] ++ systemPackages;
   fonts.packages = with pkgs; [ terminus_font ];
 }

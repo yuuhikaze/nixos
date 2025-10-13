@@ -7,6 +7,7 @@
     "/etc/NetworkManager/system-connections"
     "/var/lib/sbctl"
     "/etc/secrets/initrd"
+    "/etc/secureboot"
   ];
   systemFiles = [
     "/etc/machine-id"

@@ -10,5 +10,6 @@
     ./openssh.nix
     ./security.nix
     ./sysctl.nix
+    ./tmpfiles.nix
   ];
 }
