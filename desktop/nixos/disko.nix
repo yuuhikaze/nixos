@@ -31,15 +31,15 @@ in with filesystemOptions; {
                       "ssd" # Explicit SSD optimization
                     ];
                   in {
-                    "/root" = {
+                    "/@root" = {
                       mountpoint = "/";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/persist" = {
+                    "/@persist" = {
                       mountpoint = "/persist";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/nix" = {
+                    "/@nix" = {
                       mountpoint = "/nix";
                       mountOptions = btrfsMountOptions;
                     };
@@ -74,15 +74,15 @@ in with filesystemOptions; {
                       "autodefrag" # Improves write speed on HDDs (harmful for SDDs)
                     ];
                   in {
-                    "/atlas" = {
+                    "/@atlas" = {
                       mountpoint = "/mnt/atlas";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/hermes" = {
+                    "/@hermes" = {
                       mountpoint = "/mnt/hermes";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/hades" = {
+                    "/@hades" = {
                       mountpoint = "/mnt/hades";
                       mountOptions = btrfsMountOptions;
                     };

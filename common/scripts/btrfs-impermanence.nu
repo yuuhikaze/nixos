@@ -22,12 +22,12 @@ mkdir /btrfs_tmp
 mount -o subvol=/ /dev/mapper/crypted-nvme /btrfs_tmp
 
 # Archive current root subvolume
-mkdir /btrfs_tmp/old_roots
-let timestamp = ls -lD /btrfs_tmp/root | update created {format date %s} | get created | first
-mv /btrfs_tmp/root $"/btrfs_tmp/old_roots/($timestamp)"
+mkdir /btrfs_tmp/@old_roots
+let timestamp = ls -lD /btrfs_tmp/@root | update created {format date %s} | get created | first
+mv /btrfs_tmp/@root $"/btrfs_tmp/@old_roots/($timestamp)"
 
 # Define three most recent archived root subvolumes
-let all_roots = (ls /btrfs_tmp/old_roots | sort-by name --reverse)
+let all_roots = (ls /btrfs_tmp/@old_roots | sort-by name --reverse)
 let excess = ($all_roots | skip 3 | get name)
 
 # Delete archived root subvolumes in excess
@@ -37,7 +37,7 @@ for root in $excess {
 }
 
 # Create blank root subvolume
-btrfs subvolume create /btrfs_tmp/root
+btrfs subvolume create /btrfs_tmp/@root
 
 # Unmount all subvolumes from tmp dir
 umount /btrfs_tmp

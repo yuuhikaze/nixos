@@ -31,27 +31,27 @@ in with filesystemOptions; {
                       "ssd" # Explicit SSD optimization
                     ];
                   in {
-                    "/root" = {
+                    "/@root" = {
                       mountpoint = "/";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/persist" = {
+                    "/@persist" = {
                       mountpoint = "/persist";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/nix" = {
+                    "/@nix" = {
                       mountpoint = "/nix";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/atlas" = {
+                    "/@atlas" = {
                       mountpoint = "/mnt/atlas";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/hermes" = {
+                    "/@hermes" = {
                       mountpoint = "/mnt/hermes";
                       mountOptions = btrfsMountOptions;
                     };
-                    "/aether" = {
+                    "/@aether" = {
                       mountpoint = "/mnt/aether";
                       mountOptions = btrfsMountOptions;
                     };

@@ -22,7 +22,7 @@ dd if=/dev/urandom bs=1 count=32 | base64 > /tmp/pass # generate LUKS decryption
 # Run nixos-anywhere (phase kexec,disko)
 nix run nixpkgs#nixos-anywhere \
   --extra-experimental-features "nix-command flakes" \
-  -- --flake '.#generic' \
+  -- --flake 'path:.#generic' \
   --generate-hardware-config nixos-facter ./facter.json \
   --phases "kexec,disko" \
   root@<target_machine_IP>
@@ -38,7 +38,7 @@ vim /mnt/persist/var/keys/sops-nix
 # Run nixos-anywhere (phase install,reboot)
 nix run nixpkgs#nixos-anywhere \
   --extra-experimental-features "nix-command flakes" \
-  -- --flake '.#generic' \
+  -- --flake 'path:.#generic' \
   --phases "install,reboot" \
   root@<target_machine_IP>
 # Unlock LUKS
@@ -59,7 +59,7 @@ sudo sbctl verify # validate
 # ==> @EXECUTOR <==
 nix run nixpkgs#nixos-rebuild \
   --extra-experimental-features "nix-command flakes" \
-  -- switch --flake .#generic \
+  -- switch --flake path:.#generic \
   --target-host root@<target_machine_IP>
 # ==> @TARGET <==
 # > Reboot, enter BIOS
@@ -101,7 +101,7 @@ nix run nixpkgs#sops \
 
 ```bash
 nix flake update # update flake inputs
-sudo nixos-rebuild switch --flake .#generic # switch to updated system
+sudo nixos-rebuild switch --flake path:.#generic # switch to updated system
 ```
 
 ### Garbage Collection
