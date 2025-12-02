@@ -1,5 +1,7 @@
 {
   security = {
+    # Enable AppArmor for system and container security
+    apparmor.enable = true;
     # tpm2.enable = true;
     # Expose /run/current-system/sw/lib/libtpm2_pkcs11.so
     # tpm2.pkcs11.enable = true;

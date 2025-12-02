@@ -103,7 +103,7 @@ nix run nixpkgs#sops \
 
 ```bash
 nix flake update # update flake inputs
-sudo nixos-rebuild switch --flake path:.#generic # switch to updated system
+sudo nixos-rebuild switch --flake 'path:.#<machine>' # switch to updated system
 ```
 
 ### Garbage Collection
