@@ -21,11 +21,12 @@ dd if=/dev/urandom bs=1 count=32 | base64 > /tmp/pass # generate LUKS decryption
 # ==> @EXECUTOR <==
 # Run nixos-anywhere (phase kexec,disko)
 nix run nixpkgs#nixos-anywhere \
-  --extra-experimental-features "nix-command flakes" \
-  -- --flake 'path:.#generic' \
+  --extra-experimental-features 'nix-command flakes' \
+  -- --flake 'path:.#<machine>' \
+  --phases 'kexec,disko' \
   --generate-hardware-config nixos-facter ./facter.json \
-  --phases "kexec,disko" \
-  root@<target_machine_IP>
+  --show-trace \
+  'root@<target_machine_IP>'
 # ==> @TARGET <==
 # Set up SSH hosts
 mkdir -p /mnt/persist/etc/secrets/initrd
@@ -37,10 +38,11 @@ vim /mnt/persist/var/keys/sops-nix
 # ==> @EXECUTOR <==
 # Run nixos-anywhere (phase install,reboot)
 nix run nixpkgs#nixos-anywhere \
-  --extra-experimental-features "nix-command flakes" \
-  -- --flake 'path:.#generic' \
-  --phases "install,reboot" \
-  root@<target_machine_IP>
+  --extra-experimental-features 'nix-command flakes' \
+  -- --flake 'path:.#<machine>' \
+  --phases 'install,reboot' \
+  --show-trace \
+  'root@<target_machine_IP>'
 # Unlock LUKS
 # @source: https://discourse.nixos.org/t/unlocking-luks-in-initrd-with-systemd-enabled-through-ssh/31052/2
 cat <<< "<pass>" | ssh -p 2224 root@192.168.100.14 systemd-tty-ask-password-agent
@@ -58,9 +60,9 @@ sudo sbctl create-keys
 sudo sbctl verify # validate
 # ==> @EXECUTOR <==
 nix run nixpkgs#nixos-rebuild \
-  --extra-experimental-features "nix-command flakes" \
-  -- switch --flake path:.#generic \
-  --target-host root@<target_machine_IP>
+  --extra-experimental-features 'nix-command flakes' \
+  -- switch --flake 'path:.#<machine>' \
+  --target-host 'root@<target_machine_IP>'
 # ==> @TARGET <==
 # > Reboot, enter BIOS
 #     Set UEFI password
@@ -82,16 +84,16 @@ sudo systemd-cryptenroll --tpm2-device=auto --tpm2-pcrs=0+4+7+15 /dev/disk/by-pa
 # Set up identity/authentication
 # @source: https://youtube.com/watch?v=G5f6GC7SnhU
 nix run nixpkgs#ssh-to-age \
-  --extra-experimental-features "nix-command flakes" \
+  --extra-experimental-features 'nix-command flakes' \
   -- -private-key -i ~/.ssh/id_ed25519 > /var/keys/sops-nix # derive private age key from private SSH key
 # Display public age key derived from private key
 # Set value on `&primary` field of `.sops.yaml` file
 nix shell nixpkgs#age \
-  --extra-experimental-features "nix-command flakes" \
+  --extra-experimental-features 'nix-command flakes' \
   -c age-keygen -y /var/keys/sops-nix
 # Generate, edit secrets file
 nix run nixpkgs#sops \
-  --extra-experimental-features "nix-command flakes" \
+  --extra-experimental-features 'nix-command flakes' \
   -- secrets.yaml
 ```
 
