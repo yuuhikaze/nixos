@@ -39,7 +39,8 @@ in {
       description =
         "Blanks root btrfs subvolume, archives three previous generations";
       wantedBy = [ "initrd.target" ];
-      after = [ "systemd-cryptsetup@crypted\\x2dnvme.service" ];
+      requires = [ "systemd-cryptsetup@crypted\\x2dnvme.service" ];
+      after = [ "systemd-cryptsetup@crypted\\x2dnvme.service" "dev-mapper-crypted\\x2dnvme.device" ];
       before = [ "sysroot.mount" ];
       path = with pkgs; [ nushell btrfs-progs coreutils util-linux ];
       unitConfig.DefaultDependencies = "no";
