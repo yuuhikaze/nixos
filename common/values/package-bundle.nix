@@ -1,5 +1,6 @@
 { pkgs, ... }: with pkgs; {
   systemPackages = [
+    pciutils
     nushell
     curl
     netcat-gnu

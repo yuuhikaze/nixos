@@ -8,7 +8,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko.nix
     ./modules
-    ./system_packages.nix
+    ./system-packages.nix
   ];
   nix.settings = {
     experimental-features = "nix-command flakes";

@@ -11,18 +11,16 @@
         53 # Incus DNS
         67 # Incus DHCPv4
       ];
-      allowedTCPPorts = [
-        # EasyTier
-        11010
-        11011
-        11012
-      ];
-      allowedUDPPorts = [
-        # EasyTier
-        11010
-        11011
-        11012
-      ];
+      # Trust EasyTier interface to forward traffic
+      trustedInterfaces = [ "et0" ];
+    };
+    nat = {
+      # Enable NAT/masquerading for EasyTier interface
+      enable = true;
+      # Interface where traffic originates from
+      internalInterfaces = [ "et0" ];
+      # Interface where traffic exits to
+      externalInterface = "enp3s0";
     };
   };
 }
