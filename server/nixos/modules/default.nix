@@ -1,7 +1,7 @@
 {
   imports = [
     ../../../common/modules
-    ./easytier.nix
+    # ./easytier.nix
     ./impermanence.nix
     ./networking.nix
     ./sops.nix

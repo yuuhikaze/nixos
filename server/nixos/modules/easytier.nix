@@ -7,7 +7,7 @@
   systemd.services."easytier" = {
     enable = true;
     script = ''
-      easytier-core -d --network-name sumeragi \
+      easytier-core -d --network-name sumeragi -n 192.168.100.0/24 \
         -p tcp://8.138.6.53:11010 -p tcp://et.sh.suhoan.cn:11010 \
         --dev-name et0 --multi-thread
     '';
