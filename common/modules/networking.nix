@@ -1,5 +1,6 @@
-{
+{ host }: {
   networking = {
+    hostName = host;
     networkmanager.enable = true;
     nftables.enable = true;
     firewall.enable = true;
