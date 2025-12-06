@@ -21,6 +21,6 @@
     };
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
-    path = with pkgs; [ easytier iproute2 bash ];
+    path = with pkgs; [ unstable.easytier iproute2 bash ];
   };
 }

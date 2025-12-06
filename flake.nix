@@ -2,6 +2,8 @@
   inputs = {
     # Use stable packages
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # Define unstable packages
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     disko = {
       url = "github:nix-community/disko/v1.11.0";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,12 +28,25 @@
     };
   };
 
-  outputs = { nixpkgs, ... }@inputs: {
+  outputs = { nixpkgs, nixpkgs-unstable, ... }@inputs:
+    let
+      system = "x86_64-linux";
+      # Create an overlay to add unstable packages
+      overlays = [
+        (final: prev: {
+          unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        })
+      ];
+    in {
     nixosConfigurations = {
       # Server configuration (formerly server/flake.nix#generic)
       server = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         modules = [
+          { nixpkgs.overlays = overlays; }
           ./server/nixos/configuration.nix
           inputs.impermanence.nixosModules.impermanence
           inputs.sops-nix.nixosModules.sops
@@ -47,8 +62,9 @@
 
       # Desktop configuration (formerly desktop/flake.nix#generic)
       desktop = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        inherit system;
         modules = [
+          { nixpkgs.overlays = overlays; }
           ./desktop/nixos/configuration.nix
           ./desktop/home-manager/home.nix
           inputs.impermanence.nixosModules.impermanence
