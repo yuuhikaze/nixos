@@ -2,6 +2,7 @@
   imports = [
     ../../../common/modules
     ./bootloader.nix
+    ./easytier.nix
     ./hyprland.nix
     ./impermanence.nix
     ./kernel.nix

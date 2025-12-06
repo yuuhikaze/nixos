@@ -6,9 +6,9 @@
   systemd.services."easytier" = {
     enable = true;
     script = ''
-      easytier-core -d --network-name sumeragi -n 192.168.100.0/24 \
+      easytier-core -d --network-name sumeragi \
         -p tcp://8.138.6.53:11010 -p tcp://et.sh.suhoan.cn:11010 \
-        --dev-name et0 --multi-thread --proxy-forward-by-system
+        --dev-name et0 --multi-thread
     '';
     serviceConfig = {
       EnvironmentFile = config.sops.secrets."system/easytier/network-secret".path;
