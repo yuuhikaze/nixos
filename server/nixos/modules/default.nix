@@ -1,6 +1,7 @@
 {
   imports = [
     ../../../common/modules
+    ./bootloader.nix
     ./easytier.nix
     ./impermanence.nix
     ./networking.nix

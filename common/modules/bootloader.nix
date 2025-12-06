@@ -22,8 +22,6 @@ in {
       ls = lib.mkForce "${pkgs.coreutils}/bin/ls";
       rm = lib.mkForce "${pkgs.coreutils}/bin/rm";
     };
-    # @source: https://www.brokenpip3.com/posts/2025-05-25-nixos-secure-installation-hetzner
-    availableKernelModules = [ "r8169" ];
     network = {
       enable = true;
       ssh = {

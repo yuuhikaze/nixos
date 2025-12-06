@@ -1,6 +1,7 @@
 {
   imports = [
     ../../../common/modules
+    ./bootloader.nix
     ./hyprland.nix
     ./impermanence.nix
     ./kernel.nix
