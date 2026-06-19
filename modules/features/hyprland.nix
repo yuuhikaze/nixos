@@ -1,7 +1,7 @@
 # @dependencies: vicinae.nix (launcher daemon for keybinds)
 {
   pkgs,
-  hyprland-easymotion,
+  # hyprland-easymotion,
   hyprland-plugins-upstream,
   ...
 }:
