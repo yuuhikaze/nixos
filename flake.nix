@@ -29,6 +29,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
+    hyprland-plugins-upstream = {
+      url = "github:hyprwm/hyprland-plugins";
+      flake = false;
+    };
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
@@ -170,7 +174,7 @@
             "zoxide.nix"
           ];
           extraSpecialArgs = {
-            inherit (inputs) hyprland-plugins-local;
+            inherit (inputs) hyprland-plugins-upstream;
           };
         };
       };
